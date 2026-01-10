@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Microsoft Graph API - Agent Identity Operations",
+  "description": "API contracts for creating, retrieving, and deleting Agent Identities via Microsoft Graph API. Based on Microsoft Entra ID Agent ID documentation.",
+  "version": "1.0.0",
+
+  "endpoints": {
+    "createAgentIdentity": {
+      "method": "POST",
+      "path": "/v1.0/directory/agentIdentities",
+      "description": "Create a new agent identity from an existing blueprint",
+      "headers": {
+        "Authorization": "Bearer {access_token}",
+        "Content-Type": "application/json"
+      },
+      "requestBody": {
+        "$ref": "#/definitions/CreateAgentIdentityRequest"
+      },
+      "responses": {
+        "201": {
+          "description": "Agent identity created successfully",
+          "schema": {
+            "$ref": "#/definitions/AgentIdentity"
+          }
+        },
+        "400": {
+          "description": "Bad request - invalid blueprint ID or parameters",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        },
+        "401": {
+          "description": "Unauthorized - invalid or expired token",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        },
+        "403": {
+          "description": "Forbidden - insufficient permissions to create agent identities",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    },
+
+    "getAgentIdentity": {
+      "method": "GET",
+      "path": "/v1.0/directory/agentIdentities/{id}",
+      "description": "Retrieve a specific agent identity by ID",
+      "headers": {
+        "Authorization": "Bearer {access_token}"
+      },
+      "parameters": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the agent identity",
+          "required": true
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Agent identity retrieved successfully",
+          "schema": {
+            "$ref": "#/definitions/AgentIdentity"
+          }
+        },
+        "404": {
+          "description": "Agent identity not found",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        },
+        "401": {
+          "description": "Unauthorized - invalid or expired token",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    },
+
+    "deleteAgentIdentity": {
+      "method": "DELETE",
+      "path": "/v1.0/directory/agentIdentities/{id}",
+      "description": "Delete an agent identity",
+      "headers": {
+        "Authorization": "Bearer {access_token}"
+      },
+      "parameters": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier of the agent identity to delete",
+          "required": true
+        }
+      },
+      "responses": {
+        "204": {
+          "description": "Agent identity deleted successfully (no content returned)"
+        },
+        "404": {
+          "description": "Agent identity not found",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        },
+        "401": {
+          "description": "Unauthorized - invalid or expired token",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        },
+        "403": {
+          "description": "Forbidden - insufficient permissions to delete agent identities",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    },
+
+    "listAgentIdentities": {
+      "method": "GET",
+      "path": "/v1.0/directory/agentIdentities",
+      "description": "List all agent identities in the tenant (optional, for exploration)",
+      "headers": {
+        "Authorization": "Bearer {access_token}"
+      },
+      "parameters": {
+        "$filter": {
+          "type": "string",
+          "description": "OData filter query (e.g., blueprintId eq '{uuid}')",
+          "required": false
+        },
+        "$top": {
+          "type": "integer",
+          "description": "Number of results to return (pagination)",
+          "required": false,
+          "default": 100
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "List of agent identities",
+          "schema": {
+            "$ref": "#/definitions/AgentIdentityCollection"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "CreateAgentIdentityRequest": {
+      "type": "object",
+      "required": ["displayName", "blueprintId"],
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Human-readable name for the agent identity",
+          "example": "Tutorial Demo Agent"
+        },
+        "blueprintId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "ID of the agent blueprint to use for creation",
+          "example": "87654321-4321-4321-4321-cba987654321"
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of the agent's purpose",
+          "example": "Agent created for tutorial demonstration"
+        }
+      }
+    },
+
+    "AgentIdentity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Unique identifier for the agent identity",
+          "example": "12345678-1234-1234-1234-123456789abc"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name",
+          "example": "Tutorial Demo Agent"
+        },
+        "createdDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of creation",
+          "example": "2026-01-10T12:00:00Z"
+        },
+        "blueprintId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "ID of the blueprint used to create this identity",
+          "example": "87654321-4321-4321-4321-cba987654321"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "disabled", "deleted"],
+          "description": "Current lifecycle state",
+          "example": "active"
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional purpose description"
+        },
+        "servicePrincipalId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Associated service principal ID in Entra ID",
+          "example": "abcdef12-3456-7890-abcd-ef1234567890"
+        }
+      }
+    },
+
+    "AgentIdentityCollection": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string",
+          "description": "OData context URL"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgentIdentity"
+          }
+        },
+        "@odata.nextLink": {
+          "type": "string",
+          "description": "URL for next page of results (pagination)"
+        }
+      }
+    },
+
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Error code",
+              "example": "InvalidRequest"
+            },
+            "message": {
+              "type": "string",
+              "description": "Human-readable error message",
+              "example": "The specified blueprint ID does not exist"
+            },
+            "innerError": {
+              "type": "object",
+              "description": "Additional error details"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "exampleRequests": {
+    "createAgent": {
+      "description": "Example: Create a new agent identity",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/directory/agentIdentities",
+        "headers": {
+          "Authorization": "Bearer eyJ0eXAiOiJKV1...",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "displayName": "Tutorial Demo Agent",
+          "blueprintId": "87654321-4321-4321-4321-cba987654321",
+          "description": "Agent for learning Agent 365"
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "12345678-1234-1234-1234-123456789abc",
+          "displayName": "Tutorial Demo Agent",
+          "createdDateTime": "2026-01-10T12:00:00Z",
+          "blueprintId": "87654321-4321-4321-4321-cba987654321",
+          "status": "active",
+          "servicePrincipalId": "abcdef12-3456-7890-abcd-ef1234567890"
+        }
+      }
+    }
+  }
+}
