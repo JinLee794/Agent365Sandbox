@@ -5,20 +5,33 @@
 jupyter>=1.0.0
 jupyterlab>=4.0.0
 
-# HTTP client for REST API examples (Notebook 02)
+# HTTP client for REST API calls and Microsoft Graph
 requests>=2.31.0
 
-# Microsoft Authentication Library - OAuth token acquisition (Notebook 02)
+# Microsoft Authentication Library - OAuth token acquisition
+# Used in all notebooks for acquiring access tokens
 msal>=1.31.0
 
-# Azure Identity SDK - Agent authentication (Notebook 03)
-azure-identity>=1.19.0
-
-# Azure AI Search SDK - RBAC demo (Notebook 03)
-azure-search-documents>=11.5.2
+# JWT token handling - decoding, validation, and inspection
+# Required for notebooks 02, 03, 04
+PyJWT>=2.9.0
+cryptography>=42.0.0  # Required by PyJWT for RS256 signatures
 
 # Environment variable management
 python-dotenv>=1.0.0
 
-# Visualization for conceptual diagrams (Notebook 01)
-matplotlib>=3.8.0
+# Optional: Azure Identity SDK for advanced scenarios
+azure-identity>=1.19.0
+azure-cli
+
+# Optional: Microsoft Graph SDK for simplified API calls
+# msgraph-sdk>=1.0.0
+
+# Azure AI Search SDK for indices and queries
+azure-search-documents>=11.4.0
+
+# Azure Management SDKs for creating and managing Azure resources
+azure-mgmt-core>=1.4.0
+azure-mgmt-search>=9.0.0
+azure-mgmt-resource>=23.0.0
+azure-mgmt-authorization>=4.0.0

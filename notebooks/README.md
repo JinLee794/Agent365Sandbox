@@ -1,15 +1,28 @@
-# Agent 365 Tutorial Notebooks
+<!-- Redirecting to consolidated main README -->
 
-This folder contains the three tutorial notebooks for Agent 365:
-- 01-introduction.ipynb (concepts, no Azure required)
-- 02-rest-api.ipynb (Graph API, Azure required)
-- 03-sdk-usage.ipynb (Azure AI Search RBAC demo, Azure required)
+# Agent 365 Notebooks
 
-Quick setup (Python 3.11+ recommended 3.13) using uv:
-1) Ensure uv is installed (`pip install uv` or see https://github.com/astral-sh/uv).
-2) Create and activate an env with uv: `uv venv .venv` then `source .venv/bin/activate` (Windows: `.venv\Scripts\activate`).
-3) Install dependencies via uv: `uv pip install -r requirements.txt`.
-4) Copy env template: `cp .env.example .env` and fill tenant ID, client ID, cert path, cert thumbprint, blueprint ID, and (for notebook 03) search endpoint/index.
-5) Launch Jupyter: `uv run jupyter lab` (or `uv run jupyter notebook`) and open the notebooks above.
+**For complete documentation, see [../README.md](../README.md)**
 
-For detailed setup, Azure prerequisites, and troubleshooting, see ../specs/001-agent365-notebooks/quickstart.md.
+This folder contains the Jupyter notebooks. Run:
+
+```bash
+jupyter lab
+```
+
+Then open notebooks starting with:
+1. **05-search-setup.ipynb** (Deploy Azure AI Search infrastructure)
+2. **06-search-rbac-demo.ipynb** (RBAC + document-level security)
+
+Or for Agent Identity Blueprint notebooks:
+1. **01-validate-configuration.ipynb**
+2. **02-token-flows.ipynb**
+3. **03-agent-sdk.ipynb**
+4. **04-interactive-authentication.ipynb**
+
+See [../README.md](../README.md) for:
+- 📂 [Project Structure](../README.md#-project-structure)
+- 🚀 [Quick Start](../README.md#-quick-start)
+- 📚 [Notebooks Overview](../README.md#-notebooks-overview)
+- 🧠 [Learning Path](../README.md#-learning-path)
+- 🛠️ [Troubleshooting](../README.md#️-troubleshooting)

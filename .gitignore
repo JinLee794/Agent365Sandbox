@@ -30,3 +30,13 @@ dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Certificates and keys
+*.pem
+*.cer
+*.crt
+*.key
+certs/
+auth-config.json
+config-summary.json
+notebooks/*.json
