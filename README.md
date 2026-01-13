@@ -1,12 +1,17 @@
 # Agent 365 Sandbox
 
-A hands-on sandbox for exploring **Microsoft Entra Agent Identities** and **Azure AI Search RBAC patterns**. This repo implements the [Agent Identity Blueprint](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) setup and provides six interactive Jupyter notebooks for learning.
+A hands-on sandbox for exploring **Microsoft Entra Agent Identities**, **Azure AI Search RBAC patterns**, and **Microsoft Agent Framework**. This repo implements the [Agent Identity Blueprint](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) setup and provides eight interactive Jupyter notebooks for learning and experimentation.
 
 ## 📂 Project Structure
 
 ```
-├── README.md                          # This file
+├── README.md                          # This file (overview & quick start)
 ├── CLAUDE.md                          # AI context & decision log
+├── docs/                              # 📚 Comprehensive documentation
+│   ├── ARCHITECTURE.md                # System design and patterns
+│   ├── SETUP.md                       # Configuration & troubleshooting
+│   ├── NOTEBOOKS.md                   # Detailed notebook descriptions
+│   └── PATTERNS.md                    # Advanced implementation patterns
 ├── notebooks/
 │   ├── a365.ps1                       # Blueprint setup script (PowerShell)
 │   ├── .env.example                   # Configuration template
@@ -15,12 +20,26 @@ A hands-on sandbox for exploring **Microsoft Entra Agent Identities** and **Azur
 │   ├── 02-token-flows.ipynb
 │   ├── 03-agent-sdk.ipynb
 │   ├── 04-interactive-authentication.ipynb
-│   ├── 05-search-setup.ipynb          # ✅ Active: Deploy Azure AI Search
-│   ├── 06-search-rbac-demo.ipynb      # ✅ Active: RBAC + document security
+│   ├── 05-search-setup.ipynb          # ✅ Deploy Azure AI Search
+│   ├── 06-search-rbac-demo.ipynb      # ✅ RBAC + document security
+│   ├── 07-agentic-retrieval-kb.ipynb  # ✅ Multi-agent KB
+│   ├── 08-foundry-iq-agent-framework.ipynb # ✅ Agent Framework + Foundry
+│   ├── foundry-resources.bicep        # Infrastructure as Code
 │   └── utils.py
 └── specs/
     └── 001-agent365-notebooks/        # Detailed specs & contracts
 ```
+
+---
+
+## 📖 Documentation Guide
+
+**Start here based on your needs:**
+
+- **[docs/SETUP.md](docs/SETUP.md)** — Configuration, prerequisites, and troubleshooting
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — System design, RBAC patterns, data flows
+- **[docs/NOTEBOOKS.md](docs/NOTEBOOKS.md)** — Detailed descriptions of all 8 notebooks with learning paths
+- **[docs/PATTERNS.md](docs/PATTERNS.md)** — Advanced patterns, extensions, and best practices
 
 ---
 
@@ -99,212 +118,109 @@ jupyter lab
 | 02 | **token-flows** | OAuth 2.0 flows, JWT inspection, token caching | 20-25 min | Reference |
 | 03 | **agent-sdk** | Microsoft Entra SDK, agent lifecycle, sign-in logs | 30-40 min | Reference |
 | 04 | **interactive-authentication** | Authorization codes, OBO flow, user consent | 35-45 min | Reference |
-| 05 | **search-setup** | Deploy Azure AI Search via Bicep, create indices | 15-20 min | ✅ **Active** |
-| 06 | **search-rbac-demo** | Index-scoped RBAC + document-level security filters | 20-30 min | ✅ **Active** |
+| 05 | **search-setup** | Deploy Azure AI Search via Bicep, create indices | 15-20 min | ✅ Active |
+| 06 | **search-rbac-demo** | Index-scoped RBAC + document-level security | 20-30 min | ✅ Active |
+| 07 | **agentic-retrieval-kb** | Multi-agent KB with answer synthesis | 25-35 min | ✅ Active |
+| 08 | **foundry-iq-agent-framework** | Foundry + Agent Framework + RBAC | 30-40 min | ✅ Active |
 
-### Active Notebooks (05 & 06)
+**📖 Full descriptions:** See [docs/NOTEBOOKS.md](docs/NOTEBOOKS.md) for detailed explanations, code samples, and learning paths.
 
-**Notebook 05: search-setup.ipynb**
-- Deploys Azure AI Search using Bicep (Subscription + Resource Group scopes)
-- Generates deterministic resource names via `uniqueString()`
-- Creates indices: `agents-us`, `agents-apac`
-- Uses `InteractiveBrowserCredential` for admin authentication
-- **Outputs:** Deployment parameters saved for Notebook 06
+### What's in Each Notebook?
 
-**Notebook 06: search-rbac-demo.ipynb**
-- Retrieves resources from Notebook 05 deployment
-- **Step 1-3:** Index-scoped RBAC role assignments
-- **Step 4:** RBAC validation queries
-- **Step 5:** Document-level access control
-  - Creates `agents-us-secure` index with `security` collection field
-  - Uploads documents with per-principal access lists
-  - Queries with OData filters: `security/any(s: s eq 'principal-id')`
+**Notebooks 01-04 (Reference):** Authentication and Entra ID concepts
+- Understand OAuth flows, token handling, and agent identities
+- Foundation for working with Microsoft Graph API
 
----
+**Notebooks 05-08 (Active):** Production agent systems
+- **Notebook 05:** Deploy Azure AI Search infrastructure
+- **Notebook 06:** Configure RBAC and document-level security
+- **Notebook 07:** Build multi-agent knowledge bases
+- **Notebook 08:** Integrate with Microsoft Agent Framework
 
-## 🔧 Configuration
-
-<details>
-<summary><b>Environment Variables (.env)</b></summary>
-
-Generated by `a365.ps1`, includes:
-
-```env
-# Entra ID
-AZURE_TENANT_ID=...
-AZURE_CLIENT_ID=...                    # Blueprint app ID
-AZURE_CLIENT_SECRET=...                # or cert path
-AGENT_BLUEPRINT_PRINCIPAL_ID=...       # Service principal object ID
-
-# Azure (for Notebooks 05 & 06)
-AZURE_SUBSCRIPTION_ID=...
-AZURE_RESOURCE_GROUP=...               # Created by Notebook 05
-AZURE_SEARCH_SERVICE_NAME=...          # Auto-generated
-```
-
-**Security:** Do not commit `.env` or private key files.
-
-</details>
-
-<details>
-<summary><b>Azure Prerequisites (Notebooks 05 & 06)</b></summary>
-
-- Azure subscription with permissions to create:
-  - Resource Groups
-  - Azure AI Search service (Free tier supported)
-  - Storage accounts
-- Azure CLI installed (for Bicep deployment)
-
-</details>
+For detailed descriptions, code examples, and learning paths, see [docs/NOTEBOOKS.md](docs/NOTEBOOKS.md).
 
 ---
 
-## 🧠 Learning Path
+## 🔧 Configuration & Setup
 
-**Sequential flow (recommended):**
+**📖 See [docs/SETUP.md](docs/SETUP.md) for:**
+- Step-by-step setup instructions
+- Azure prerequisites and permissions
+- Environment variable reference
+- Comprehensive troubleshooting
+- Production checklist
 
-```
-Blueprint Setup (a365.ps1)
-    ↓
-01-validate-configuration     (Verify setup works)
-    ↓
-02-token-flows                (Understand OAuth)
-    ↓
-03-agent-sdk                  (Agent lifecycle)
-    ↓
-04-interactive-authentication (User consent flows)
-    ↓
-05-search-setup               (Deploy infrastructure)
-    ↓
-06-search-rbac-demo           (RBAC + security patterns)
-```
+**Quick summary:**
 
-Each notebook builds on concepts from previous ones.
+1. Run Blueprint setup: `pwsh notebooks/a365.ps1 -Step all`
+2. Install dependencies: `pip install -r notebooks/requirements.txt`
+3. Configure environment: Copy `.env.example` → `.env` and fill in values
+4. Launch notebooks: `jupyter lab` (see [docs/SETUP.md](docs/SETUP.md) for detailed steps)
 
 ---
 
-## 🛠️ Troubleshooting
+## � Learning Paths
 
-<details>
-<summary><b>Blueprint Setup Issues</b></summary>
+**📖 See [docs/NOTEBOOKS.md](docs/NOTEBOOKS.md) for complete learning paths including:**
 
-**Missing Microsoft Graph SDK**
-```powershell
-Install-Module Microsoft.Graph -Force
-```
+- **Path 1:** Agent Identity & Authentication (Notebooks 01-04)
+- **Path 2:** Azure Search & RBAC (Notebooks 05-06)
+- **Path 3:** Agentic Retrieval & Knowledge Base (Notebooks 05-07)
+- **Path 4:** Full Stack - Foundry + Agent Framework (Notebooks 05-08)
 
-**App registration fails**
-- Verify Entra ID tenant permissions
-- Check `a365.http` file for raw Graph API calls
-
-**Certificate generation fails**
-- Ensure OpenSSL is installed: `openssl version`
-- Or use client secret instead: `-CertificateOrSecret "secret"`
-
-</details>
-
-<details>
-<summary><b>Jupyter & Python Issues</b></summary>
-
-**"az: command not found"**
-- Notebooks auto-fix PATH for common az CLI locations
-- Verify: `which az` or `where az` (Windows)
-
-**"ModuleNotFoundError: No module named 'azure'"**
-```bash
-uv pip install azure-search-documents azure-identity
-```
-
-**KeyboardInterrupt on Azure CLI**
-- Some subprocess calls may hang; interrupt with Ctrl+C and retry
-
-</details>
-
-<details>
-<summary><b>Azure AI Search Issues</b></summary>
-
-**"403 Forbidden" on queries**
-- RBAC role assignments take 1-2 minutes to propagate
-- Verify in Azure Portal → Search Service → Access Control (IAM)
-
-**"Invalid expression" in OData filters**
-- For `Collection(Edm.String)` fields, use: `security/any(s: s eq 'value')`
-- ❌ Not: `search.in(field, 'value', ',')`
-
-**Bicep deployment fails**
-- Verify Azure CLI is accessible
-- Check resource group exists or has create permissions
-- Review deployment logs: `az deployment group show --name search-setup`
-
-</details>
+Each path includes prerequisites, execution guide, expected outputs, and next steps.
 
 ---
 
-## 📖 Key Concepts
+## � Troubleshooting
 
-<details>
-<summary><b>Agent Identity Blueprint</b></summary>
+**📖 See [docs/SETUP.md](docs/SETUP.md) for comprehensive troubleshooting including:**
 
-A **template** defining:
-- Application registration in Entra ID
-- OAuth scopes and permissions
-- Client credentials (secrets or certificates)
-- Identifier URI for API exposure
-
-Created once per environment; can spawn multiple agent identities.
-
-</details>
-
-<details>
-<summary><b>Authentication Flows</b></summary>
-
-**App-Only (Autonomous Agent)**
-- Agent acts on its own behalf
-- Uses client credentials
-- Example: Background job, scheduled sync
-
-**App + User Context**
-- Agent has dedicated mailbox/calendar
-- Uses client credentials with user context
-- Example: Service account bot
-
-**On-Behalf-Of (Interactive)**
-- Agent acts for a human user
-- User authenticates and grants consent
-- Example: Chat bot reading user emails
-
-</details>
-
-<details>
-<summary><b>RBAC + Document Security</b></summary>
-
-**RBAC (Index-Level)**
-- Controls *who can query* an index
-- Assigned at `Search Index Data Reader` role
-- Scope: specific index or search service
-
-**Document-Level Filters**
-- Controls *which documents* a principal sees
-- OData filter expressions: `security/any(s: s eq 'principal')`
-- Combined with RBAC for fine-grained access
-
-**Example:**
-- User A has `Search Index Data Reader` role on `agents-us` index
-- But document security filter limits to docs where `security` field contains User A's principal ID
-- Result: User A can query the index but only sees their authorized documents
-
-</details>
+- Blueprint setup issues
+- Jupyter and Python errors
+- Azure AI Search configuration
+- RBAC authentication problems
+- Network and firewall issues
+- Step-by-step solutions for 7+ common problems
 
 ---
 
-## 📚 Resources
+## � Key Concepts
+
+**📖 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for deep dives on:**
+
+- **Agent Identity Blueprint:** Template for agent app registrations
+- **OAuth 2.0 Flows:** App-only, user delegation, on-behalf-of patterns
+- **RBAC (Multi-Layer):** Azure RBAC, agent policies, document filters
+- **Agent Framework:** Tool calling, orchestration, integration patterns
+- **Knowledge Bases:** Multi-index organization with selective access
+- **Answer Synthesis:** Formatting and summarizing retrieved documents
+
+**Quick reference:**
+- **Agent Blueprint** = Application registration template in Entra ID
+- **RBAC** = Role-based access control at index and document level
+- **Agent Framework** = LLM-powered agent orchestration with tool support
+- **Knowledge Base** = Organized set of indices with agent-level access control
+
+---
+
+## 📚 Resources & Documentation
+
+**Project Documentation:**
+- [docs/SETUP.md](docs/SETUP.md) — Configuration, prerequisites, troubleshooting
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — System design and RBAC patterns
+- [docs/NOTEBOOKS.md](docs/NOTEBOOKS.md) — Notebook descriptions and learning paths
+- [docs/PATTERNS.md](docs/PATTERNS.md) — Advanced implementation patterns
+
+**External References:**
 
 | Topic | Link |
 |-------|------|
 | **Agent Identity Platform** | [Microsoft Docs](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/) |
-| **Agent Blueprint Setup** | [Microsoft Docs](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) |
+| **Agent Blueprint** | [Microsoft Docs](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) |
 | **Azure AI Search** | [Microsoft Docs](https://learn.microsoft.com/en-us/azure/search/) |
-| **Cosmos DB Best Practices** | [Well-Architected Guide](https://learn.microsoft.com/en-us/azure/well-architected/service-guides/cosmos-db) |
+| **Agent Framework** | [GitHub Repository](https://github.com/microsoft/agent-framework) |
+| **Azure Foundry** | [Microsoft Docs](https://learn.microsoft.com/azure/ai-services/agents/) |
 | **OAuth 2.0 Flows** | [Microsoft Docs](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow) |
 | **Microsoft Graph** | [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) |
 
