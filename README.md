@@ -224,6 +224,11 @@ Each path includes prerequisites, execution guide, expected outputs, and next st
 | **OAuth 2.0 Flows** | [Microsoft Docs](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow) |
 | **Microsoft Graph** | [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) |
 
+**Reference Content:**
+
+The agentic retrieval and knowledge base patterns in this repo (notebooks 07-08) are based on Microsoft's official lab:
+- [**Microsoft LAB511**: Build Agentic Knowledge Bases with Azure AI Search](https://github.com/microsoft/ignite25-LAB511-build-agentic-knowledge-bases-next-level-rag-with-azure-ai-search)
+
 ---
 
 ## 📝 Notes
