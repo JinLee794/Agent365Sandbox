@@ -1032,5 +1032,5 @@ for result in results:
 
 ---
 
-**Last Updated:** 2024-01-12  
-**Version:** 1.0
+**Last Updated:** January 2026  
+**Version:** 1.1

@@ -1,14 +1,14 @@
 # Agent 365 Sandbox
 
-A hands-on sandbox for exploring **Microsoft Entra Agent Identities**, **Azure AI Search RBAC patterns**, and **Microsoft Agent Framework**. This repo implements the [Agent Identity Blueprint](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) setup and provides eight interactive Jupyter notebooks for learning and experimentation.
+A hands-on sandbox for exploring **Microsoft Entra Agent Identities**, **Azure AI Search RBAC patterns**, and **Microsoft Agent Framework**. This repo implements the [Agent Identity Blueprint](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) setup and provides eleven interactive Jupyter notebooks for learning and experimentation.
 
-## � Two Authentication Paths
+## 🔀 Two Authentication Paths
 
 This sandbox has **two independent authentication paths**. Choose based on your needs:
 
 | | **Path A: Agent Identity** | **Path B: AI Services** |
 |---|---|---|
-| **Notebooks** | 01-04 | 05-08 |
+| **Notebooks** | 01, 01b, 02, 03, 04 | 05, 06, 07, 08a, 08b |
 | **Purpose** | Create agent identities in Entra ID | Deploy & use Azure AI Foundry, Search |
 | **Setup** | `pwsh a365.ps1` or `a365` CLI | Notebook 05 deploys infrastructure |
 | **Auth Method** | App credentials (secret/cert) | InteractiveBrowserCredential (you) |
@@ -56,7 +56,7 @@ This sandbox has **two independent authentication paths**. Choose based on your 
 
 - **[docs/SETUP.md](docs/SETUP.md)** — Configuration, prerequisites, and troubleshooting
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — System design, RBAC patterns, data flows
-- **[docs/NOTEBOOKS.md](docs/NOTEBOOKS.md)** — Detailed descriptions of all 10 notebooks with learning paths
+- **[docs/NOTEBOOKS.md](docs/NOTEBOOKS.md)** — Detailed descriptions of all 11 notebooks with learning paths
 - **[docs/PATTERNS.md](docs/PATTERNS.md)** — Advanced patterns, extensions, and best practices
 
 ---
@@ -166,20 +166,10 @@ pip install -r requirements.txt
 
 ## 📚 Notebooks Overview
 
-# Launch Jupyter
-uv run jupyter lab
-# OR
-jupyter lab
-
-</details>
-
----
-
-## 📚 Notebooks Overview
-
 | # | Name | Purpose | Duration | Status |
 |---|------|---------|----------|--------|
 | 01 | **validate-configuration** | Load & test `.env` config, verify Graph connectivity | 10-15 min | Reference |
+| 01b | **agent365-cli-init** | Initialize agent blueprint via Agent365 CLI | 15-20 min | ✅ Active |
 | 02 | **token-flows** | OAuth 2.0 flows, JWT inspection, token caching | 20-25 min | Reference |
 | 03 | **agent-sdk** | Microsoft Entra SDK, agent lifecycle, sign-in logs | 30-40 min | Reference |
 | 04 | **interactive-authentication** | Authorization codes, OBO flow, user consent | 35-45 min | Reference |
@@ -228,7 +218,7 @@ For detailed descriptions, code examples, and learning paths, see [docs/NOTEBOOK
 
 ---
 
-## � Learning Paths
+## 🎓 Learning Paths
 
 **📖 See [docs/NOTEBOOKS.md](docs/NOTEBOOKS.md) for complete learning paths including:**
 
@@ -241,7 +231,7 @@ Each path includes prerequisites, execution guide, expected outputs, and next st
 
 ---
 
-## � Troubleshooting
+## 🔧 Troubleshooting
 
 **📖 See [docs/SETUP.md](docs/SETUP.md) for comprehensive troubleshooting including:**
 
@@ -254,7 +244,7 @@ Each path includes prerequisites, execution guide, expected outputs, and next st
 
 ---
 
-## � Key Concepts
+## 🔑 Key Concepts
 
 **📖 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for deep dives on:**
 
