@@ -35,10 +35,10 @@ jupyter lab
 
 # 6. Open notebooks in this order:
 # - 01-validate-configuration.ipynb (verify setup)
-# - 05-search-setup.ipynb (deploy Azure AI Search)
+# - 05-azure-infra-setup.ipynb (deploy Azure AI Search)
 # - 06-search-rbac-demo.ipynb (configure RBAC)
 # - 07-agentic-retrieval-knowledge-base.ipynb (KB + agents)
-# - 08-foundry-iq-agent-framework.ipynb (Agent Framework)
+# - 08a-foundry-setup.ipynb → 08b-foundry-agents.ipynb (Agent Framework)
 ```
 
 ---
@@ -331,7 +331,7 @@ OPENAI_CHAT_MODEL_ID         # Default: gpt-4
 
 ## Notebook-Specific Configuration
 
-### Notebook 05: search-setup.ipynb
+### Notebook 05: azure-infra-setup.ipynb
 
 **Creates:** Azure AI Search service and indices
 
@@ -355,14 +355,20 @@ OPENAI_CHAT_MODEL_ID         # Default: gpt-4
 
 **Requires:** All Notebook 05 vars + populated indices
 
-### Notebook 08: foundry-iq-agent-framework.ipynb
+### Notebooks 08a-08b: foundry-setup.ipynb → foundry-agents.ipynb
 
-**Creates:** Foundry resources, AI project, model deployments
+**Note:** Notebook 08 (agent-framework-foundry.ipynb) is deprecated. Use 08a→08b instead.
+
+**Creates:** Foundry resources, AI project, model deployments, agents
 
 **Requires:**
 - All previous + LLM configuration
 - Microsoft Agent Framework: `pip install agent-framework --pre`
 - RBAC permissions (see [Azure Search RBAC Setup](#azure-search-rbac-setup))
+
+**Workflow:**
+1. Run 08a-foundry-setup.ipynb (configuration & connections)
+2. Run 08b-foundry-agents.ipynb (agent creation & queries)
 
 ---
 
