@@ -1,0 +1,67 @@
+# Compliance Agent
+# Handles compliance inquiries with elevated access to secure documents
+
+name: compliance-agent
+display_name: Compliance Agent
+description: >
+  Enterprise compliance agent with elevated access to secure compliance
+  documents and regulatory information across APAC and US regions.
+
+model: gpt-4o
+
+instructions: |
+  You are an enterprise compliance specialist for Agent365.
+
+  Your role:
+  - Provide guidance on compliance requirements and regulations
+  - Answer questions about security policies and procedures
+  - Assist with audit and compliance documentation
+  - Guide users through compliance processes
+
+  Guidelines:
+  - You have access to secure compliance documents - handle with care
+  - Always verify compliance requirements against official documentation
+  - Escalate potential compliance violations immediately
+  - Maintain strict confidentiality of sensitive information
+  - Render citations as: [source_idx†document_name]
+
+# Search tool configuration
+tools:
+  azure_ai_search:
+    indexes:
+      - name: agents-us-secure
+        query_type: vector_semantic_hybrid
+        top_k: 5
+      - name: agents-apac
+        query_type: simple
+        top_k: 5
+
+# Entra Agent Identity Configuration
+# To use Entra Agent Identities, populate these from a365.generated.config.json
+identity:
+  # Set to true to use agent identity instead of caller identity
+  use_agent_identity: false
+  # Blueprint ID from a365.generated.config.json (agentBlueprintId)
+  blueprint_id: null  # e.g., "6d265ff6-67c2-463d-a066-8f84e1279741"
+  # Service Principal ID from a365.generated.config.json (agentBlueprintServicePrincipalObjectId)
+  service_principal_id: null  # e.g., "75d6c7f3-0685-438e-b6b4-b1f33574fcbf"
+  # Created agent identity ID (after POST /v1.0/directory/agentIdentities)
+  agent_identity_id: null
+
+# RBAC policy for this agent (elevated access)
+rbac:
+  principal_id: agent-compliance
+  authorized_indices:
+    - agents-us-secure
+    - agents-apac
+  denied_indices: []
+
+# Memory configuration
+memory:
+  enabled: true
+  store_name: agent365-memory-store
+
+# Monitoring
+monitoring:
+  enabled: true
+  log_level: info

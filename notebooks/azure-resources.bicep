@@ -90,6 +90,42 @@ resource foundryContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   }
 }
 
+// ========== Log Analytics & Application Insights ==========
+// Required for monitoring Foundry agents, tool calls, and tracing
+
+@description('Name of the Log Analytics workspace')
+param logAnalyticsName string = 'a365-logs-${toLower(uniqueString(resourceGroup().id))}'
+
+@description('Name of the Application Insights resource')
+param appInsightsName string = 'a365-insights-${toLower(uniqueString(resourceGroup().id))}'
+
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: logAnalyticsName
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+    retentionInDays: 30
+    features: {
+      enableLogAccessUsingOnlyResourcePermissions: true
+    }
+  }
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: logAnalytics.id
+    IngestionMode: 'LogAnalytics'
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+  }
+}
+
 // ========== Azure AI Search Service ==========
 resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
   name: searchServiceName
@@ -101,6 +137,13 @@ resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
     replicaCount: 1
     partitionCount: 1
     hostingMode: 'default'
+    // Enable both API Key and RBAC (Entra ID) authentication
+    // This is required for agentic mode (Knowledge Sources) which uses RBAC
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http401WithBearerChallenge'
+      }
+    }
   }
   identity: {
     type: 'SystemAssigned'
@@ -248,6 +291,7 @@ output foundryContainerName string = foundryContainer.name
 output aiFoundryName string = aiFoundry.name
 output aiFoundryId string = aiFoundry.id
 output aiFoundryEndpoint string = 'https://${aiFoundry.properties.customSubDomainName}.openai.azure.com/'
+output aiFoundryProjectEndpoint string = 'https://${aiFoundry.properties.customSubDomainName}.services.ai.azure.com/api/projects/${aiProject.name}'
 output aiProjectName string = aiProject.name
 output aiProjectId string = aiProject.id
 output aiProjectIdentityPrincipalId string = aiProject.identity.principalId
@@ -256,3 +300,10 @@ output aiProjectIdentityPrincipalId string = aiProject.identity.principalId
 output chatDeploymentName string = chatDeployment.name
 output embeddingsDeploymentName string = embeddingsDeployment.name
 output blueprintPrincipalId string = blueprintPrincipalId
+
+// Monitoring outputs
+output logAnalyticsWorkspaceId string = logAnalytics.id
+output logAnalyticsWorkspaceName string = logAnalytics.name
+output appInsightsName string = appInsights.name
+output appInsightsConnectionString string = appInsights.properties.ConnectionString
+output appInsightsInstrumentationKey string = appInsights.properties.InstrumentationKey

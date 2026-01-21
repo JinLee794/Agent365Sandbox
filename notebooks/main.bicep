@@ -59,6 +59,7 @@ output foundryContainerName string = azureResources.outputs.foundryContainerName
 output aiFoundryName string = azureResources.outputs.aiFoundryName
 output aiFoundryId string = azureResources.outputs.aiFoundryId
 output aiFoundryEndpoint string = azureResources.outputs.aiFoundryEndpoint
+output aiFoundryProjectEndpoint string = azureResources.outputs.aiFoundryProjectEndpoint
 output aiProjectName string = azureResources.outputs.aiProjectName
 output aiProjectId string = azureResources.outputs.aiProjectId
 output aiProjectIdentityPrincipalId string = azureResources.outputs.aiProjectIdentityPrincipalId
@@ -67,3 +68,10 @@ output aiProjectIdentityPrincipalId string = azureResources.outputs.aiProjectIde
 output chatDeploymentName string = azureResources.outputs.chatDeploymentName
 output embeddingsDeploymentName string = azureResources.outputs.embeddingsDeploymentName
 output blueprintPrincipalId string = azureResources.outputs.blueprintPrincipalId
+
+// Monitoring outputs
+output logAnalyticsWorkspaceId string = azureResources.outputs.logAnalyticsWorkspaceId
+output logAnalyticsWorkspaceName string = azureResources.outputs.logAnalyticsWorkspaceName
+output appInsightsName string = azureResources.outputs.appInsightsName
+output appInsightsConnectionString string = azureResources.outputs.appInsightsConnectionString
+output appInsightsInstrumentationKey string = azureResources.outputs.appInsightsInstrumentationKey

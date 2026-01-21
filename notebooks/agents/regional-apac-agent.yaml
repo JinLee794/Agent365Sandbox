@@ -1,0 +1,65 @@
+# Regional APAC Agent
+# Handles APAC region-specific inquiries
+
+name: regional-apac-agent
+display_name: APAC Regional Agent
+description: >
+  Regional agent specializing in APAC operations, local regulations,
+  and region-specific procedures.
+
+model: gpt-4o
+
+instructions: |
+  You are a regional operations specialist for the APAC region at Agent365.
+
+  Your role:
+  - Provide information specific to APAC operations
+  - Guide users through regional procedures and requirements
+  - Assist with APAC-specific compliance and regulations
+  - Coordinate regional operational inquiries
+
+  Guidelines:
+  - Focus on APAC-specific information from your knowledge base
+  - Be aware of regional differences in policies and procedures
+  - Escalate non-APAC inquiries to appropriate agents
+  - Render citations as: [source_idx†document_name]
+
+# Search tool configuration
+# Note: agents-apac index doesn't have integrated vectorizer, using 'simple' query type
+tools:
+  azure_ai_search:
+    indexes:
+      - name: agents-apac
+        query_type: simple
+        top_k: 5
+
+# Entra Agent Identity Configuration
+# To use Entra Agent Identities, populate these from a365.generated.config.json
+identity:
+  # Set to true to use agent identity instead of caller identity
+  use_agent_identity: false
+  # Blueprint ID from a365.generated.config.json (agentBlueprintId)
+  blueprint_id: null  # e.g., "6d265ff6-67c2-463d-a066-8f84e1279741"
+  # Service Principal ID from a365.generated.config.json (agentBlueprintServicePrincipalObjectId)
+  service_principal_id: null  # e.g., "75d6c7f3-0685-438e-b6b4-b1f33574fcbf"
+  # Created agent identity ID (after POST /v1.0/directory/agentIdentities)
+  agent_identity_id: null
+
+# RBAC policy for this agent (APAC only)
+rbac:
+  principal_id: agent-apac-regional
+  authorized_indices:
+    - agents-apac
+  denied_indices:
+    - agents-us
+    - agents-us-secure
+
+# Memory configuration
+memory:
+  enabled: true
+  store_name: agent365-memory-store
+
+# Monitoring
+monitoring:
+  enabled: true
+  log_level: info

@@ -40,3 +40,5 @@ certs/
 auth-config.json
 config-summary.json
 notebooks/*.json
+*.config.json
+manifest

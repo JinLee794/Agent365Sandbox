@@ -1,0 +1,67 @@
+# Customer Service Agent
+# Handles customer-facing inquiries with access to policies and procedures
+
+name: customer-service-agent
+display_name: Customer Service Agent
+description: >
+  Enterprise customer service agent with access to US and APAC knowledge bases.
+  Handles policy inquiries, procedures, and general customer support.
+
+model: gpt-4o
+
+instructions: |
+  You are an enterprise customer service agent for Agent365.
+
+  Your role:
+  - Answer customer inquiries about policies and procedures
+  - Provide accurate information from authorized knowledge bases
+  - Maintain a professional and helpful tone
+  - Always cite your sources when providing information
+
+  Guidelines:
+  - Only use information from your authorized knowledge sources
+  - If you cannot find relevant information, acknowledge this clearly
+  - Escalate complex compliance or security issues appropriately
+  - Render citations as: [source_idx†document_name]
+
+# Search tool configuration
+tools:
+  azure_ai_search:
+    indexes:
+      - name: agents-us
+        query_type: vector_semantic_hybrid
+        top_k: 5
+      - name: agents-apac
+        query_type: simple
+        top_k: 5
+
+# Entra Agent Identity Configuration
+# To use Entra Agent Identities, populate these from a365.generated.config.json
+identity:
+  # Set to true to use agent identity instead of caller identity
+  use_agent_identity: false
+  # Blueprint ID from a365.generated.config.json (agentBlueprintId)
+  blueprint_id: null  # e.g., "6d265ff6-67c2-463d-a066-8f84e1279741"
+  # Service Principal ID from a365.generated.config.json (agentBlueprintServicePrincipalObjectId)
+  service_principal_id: null  # e.g., "75d6c7f3-0685-438e-b6b4-b1f33574fcbf"
+  # Created agent identity ID (after POST /v1.0/directory/agentIdentities)
+  agent_identity_id: null
+
+# RBAC policy for this agent
+rbac:
+  principal_id: agent-customer-service
+  authorized_indices:
+    - agents-us
+    - agents-apac
+  denied_indices:
+    - agents-us-secure
+
+# Memory configuration
+memory:
+  enabled: true
+  store_name: agent365-memory-store
+
+# Monitoring
+monitoring:
+  enabled: true
+  log_level: info

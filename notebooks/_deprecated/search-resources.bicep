@@ -69,6 +69,13 @@ resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
     replicaCount: 1
     partitionCount: 1
     hostingMode: 'default'
+    // Enable both API Key and RBAC (Entra ID) authentication
+    // This is required for agentic mode (Knowledge Sources) which uses RBAC
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http401WithBearerChallenge'
+      }
+    }
   }
   identity: {
     type: 'SystemAssigned'

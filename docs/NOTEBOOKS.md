@@ -16,13 +16,16 @@ Complete guide to all Jupyter notebooks in Agent365 Sandbox, with learning paths
 | # | Name | Purpose | Duration | Status | Dependencies |
 |---|------|---------|----------|--------|---|
 | **01** | **validate-configuration** | Load & test `.env`, verify Graph connectivity | 10-15 min | Reference | None |
+| **01b** | **agent365-cli-init** | Initialize agent blueprint via Agent365 CLI | 15-20 min | ✅ **Active** | None |
 | **02** | **token-flows** | OAuth 2.0 flows, JWT inspection, token caching | 20-25 min | Reference | 01 |
 | **03** | **agent-sdk** | Microsoft Entra SDK, agent lifecycle, sign-in logs | 30-40 min | Reference | 02 |
 | **04** | **interactive-authentication** | Authorization codes, OBO flow, user consent | 35-45 min | Reference | 03 |
-| **05** | **search-setup** | Deploy Azure AI Search via Bicep, create indices | 15-20 min | ✅ **Active** | 01 |
+| **05** | **azure-infra-setup** | Deploy Azure AI Search via Bicep, create indices | 15-20 min | ✅ **Active** | 01 |
 | **06** | **search-rbac-demo** | Index RBAC + document-level security | 20-30 min | ✅ **Active** | 05 |
-| **07** | **agentic-retrieval-kb** | Multi-agent KB with synthesis + conversations | 25-35 min | ✅ **Active** | 06 |
-| **08** | **foundry-iq-agent-framework** | Foundry agents with Agent Framework + RBAC | 30-40 min | ✅ **Active** | 07 |
+| **07** | **agentic-retrieval-knowledge-base** | Multi-agent KB with synthesis + conversations | 25-35 min | ✅ **Active** | 06 |
+| **08** | **agent-framework-foundry** | *(Legacy)* Combined setup + agents | 30-40 min | Deprecated | 07 |
+| **08a** | **foundry-setup** | Foundry configuration, credentials, connections | 15-20 min | ✅ **Active** | 07 |
+| **08b** | **foundry-agents** | Agent creation, queries, invocation | 20-25 min | ✅ **Active** | 08a |
 
 ---
 
@@ -57,7 +60,7 @@ Blueprint Setup (a365.ps1)
     ↓
 01-validate-configuration
     ↓
-05-search-setup
+05-azure-infra-setup
     ↓
 06-search-rbac-demo
 ```
@@ -76,11 +79,11 @@ Blueprint Setup (a365.ps1)
     ↓
 01-validate-configuration
     ↓
-05-search-setup
+05-azure-infra-setup
     ↓
 06-search-rbac-demo
     ↓
-07-agentic-retrieval-kb
+07-agentic-retrieval-knowledge-base
 ```
 
 **Outcomes:**
@@ -98,13 +101,15 @@ Blueprint Setup (a365.ps1)
     ↓
 01-validate-configuration
     ↓
-05-search-setup
+05-azure-infra-setup
     ↓
 06-search-rbac-demo
     ↓
-07-agentic-retrieval-kb
+07-agentic-retrieval-knowledge-base
     ↓
-08-foundry-iq-agent-framework
+08a-foundry-setup
+    ↓
+08b-foundry-agents
 ```
 
 **Outcomes:**
@@ -281,7 +286,7 @@ Access token acquired for: https://graph.microsoft.com
 
 ---
 
-### Notebook 05: search-setup.ipynb
+### Notebook 05: azure-infra-setup.ipynb
 
 **Duration:** 15-20 minutes  
 **Purpose:** Deploy Azure AI Search infrastructure
@@ -489,7 +494,7 @@ Data Agents (selective access)
 
 ---
 
-### Notebook 08: foundry-iq-agent-framework.ipynb ⭐ LATEST
+### Notebook 08: agent-framework-foundry.ipynb ⭐ LATEST
 
 **Duration:** 30-40 minutes  
 **Purpose:** Production-ready agents with Microsoft Agent Framework
@@ -648,7 +653,7 @@ jupyter lab 01-validate-configuration.ipynb
 # 6. Repeat
 
 # Or run via command line
-jupyter nbconvert --to notebook --execute --inplace 05-search-setup.ipynb
+jupyter nbconvert --to notebook --execute --inplace 05-azure-infra-setup.ipynb
 ```
 
 ### Handling Errors

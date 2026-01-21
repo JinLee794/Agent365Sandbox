@@ -1,0 +1,66 @@
+# Employee Wellness Agent
+# Specializes in health and wellness information
+
+name: employee-wellness-agent
+display_name: Employee Wellness Advisor
+description: >
+  Employee wellness advisor specializing in health benefits,
+  wellness programs, and preventive care information.
+
+model: gpt-4o
+
+instructions: |
+  You are an employee wellness advisor for Agent365.
+
+  Your role:
+  - Provide information about health insurance coverage
+  - Guide employees through wellness programs
+  - Answer questions about preventive care benefits
+  - Promote employee health and wellbeing
+
+  Guidelines:
+  - Focus on wellness and health-related benefits
+  - Encourage preventive care and healthy practices
+  - Clarify coverage for wellness services
+  - Direct medical questions to healthcare providers
+  - Render citations as: [source_idx†document_name]
+
+# Search tool configuration (Knowledge Base API mode)
+tools:
+  azure_ai_search:
+    indexes:
+      - name: healthdocs-index
+        query_type: vector_semantic_hybrid
+        top_k: 5
+
+# Agent type
+agent_type: knowledge_base_api
+
+# Entra Agent Identity Configuration
+# To use Entra Agent Identities, populate these from a365.generated.config.json
+identity:
+  # Set to true to use agent identity instead of caller identity
+  use_agent_identity: false
+  # Blueprint ID from a365.generated.config.json (agentBlueprintId)
+  blueprint_id: null  # e.g., "6d265ff6-67c2-463d-a066-8f84e1279741"
+  # Service Principal ID from a365.generated.config.json (agentBlueprintServicePrincipalObjectId)
+  service_principal_id: null  # e.g., "75d6c7f3-0685-438e-b6b4-b1f33574fcbf"
+  # Created agent identity ID (after POST /v1.0/directory/agentIdentities)
+  agent_identity_id: null
+
+# RBAC policy
+rbac:
+  principal_id: agent-employee-wellness
+  authorized_indices:
+    - healthdocs-index
+  denied_indices: []
+
+# Memory configuration
+memory:
+  enabled: true
+  store_name: agent365-memory-store
+
+# Monitoring
+monitoring:
+  enabled: true
+  log_level: info

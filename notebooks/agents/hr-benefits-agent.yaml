@@ -1,0 +1,70 @@
+# HR Benefits Agent
+# Handles HR and benefits inquiries using Knowledge Base API
+
+name: hr-benefits-agent
+display_name: HR Benefits Assistant
+description: >
+  HR benefits assistant specializing in health insurance, benefits packages,
+  and HR policy inquiries using the Knowledge Base API.
+
+model: gpt-4o
+
+instructions: |
+  You are an HR benefits specialist for Agent365.
+
+  Your role:
+  - Answer questions about health insurance plans and coverage
+  - Provide information about employee benefits and perks
+  - Guide employees through HR policies and procedures
+  - Assist with benefits enrollment and changes
+
+  Guidelines:
+  - Provide accurate benefits information from official HR sources
+  - Clarify coverage details and eligibility requirements
+  - Direct complex benefits questions to HR representatives
+  - Maintain employee confidentiality
+  - Render citations as: [source_idx†document_name]
+
+# Search tool configuration (Knowledge Base API mode)
+tools:
+  azure_ai_search:
+    indexes:
+      - name: healthdocs-index
+        query_type: vector_semantic_hybrid
+        top_k: 5
+      - name: hrdocs-index
+        query_type: vector_semantic_hybrid
+        top_k: 5
+
+# Agent type
+agent_type: knowledge_base_api
+
+# Entra Agent Identity Configuration
+# To use Entra Agent Identities, populate these from a365.generated.config.json
+identity:
+  # Set to true to use agent identity instead of caller identity
+  use_agent_identity: false
+  # Blueprint ID from a365.generated.config.json (agentBlueprintId)
+  blueprint_id: null  # e.g., "6d265ff6-67c2-463d-a066-8f84e1279741"
+  # Service Principal ID from a365.generated.config.json (agentBlueprintServicePrincipalObjectId)
+  service_principal_id: null  # e.g., "75d6c7f3-0685-438e-b6b4-b1f33574fcbf"
+  # Created agent identity ID (after POST /v1.0/directory/agentIdentities)
+  agent_identity_id: null
+
+# RBAC policy
+rbac:
+  principal_id: agent-hr-benefits
+  authorized_indices:
+    - healthdocs-index
+    - hrdocs-index
+  denied_indices: []
+
+# Memory configuration
+memory:
+  enabled: true
+  store_name: agent365-memory-store
+
+# Monitoring
+monitoring:
+  enabled: true
+  log_level: info
