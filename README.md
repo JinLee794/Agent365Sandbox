@@ -2,13 +2,13 @@
 
 A hands-on sandbox for exploring **Microsoft Entra Agent Identities**, **Azure AI Search RBAC patterns**, and **Microsoft Agent Framework**. This repo implements the [Agent Identity Blueprint](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint) setup and provides eleven interactive Jupyter notebooks for learning and experimentation.
 
-## � Two Authentication Paths
+## 🔀 Two Authentication Paths
 
 This sandbox has **two independent authentication paths**. Choose based on your needs:
 
 | | **Path A: Agent Identity** | **Path B: AI Services** |
 |---|---|---|
-| **Notebooks** | 01-04 | 05-08 |
+| **Notebooks** | 01, 01b, 02, 03, 04 | 05, 06, 07, 08a, 08b |
 | **Purpose** | Create agent identities in Entra ID | Deploy & use Azure AI Foundry, Search |
 | **Setup** | `pwsh a365.ps1` or `a365` CLI | Notebook 05 deploys infrastructure |
 | **Auth Method** | App credentials (secret/cert) | InteractiveBrowserCredential (you) |
@@ -166,17 +166,6 @@ pip install -r requirements.txt
 
 ## 📚 Notebooks Overview
 
-# Launch Jupyter
-uv run jupyter lab
-# OR
-jupyter lab
-
-</details>
-
----
-
-## 📚 Notebooks Overview
-
 | # | Name | Purpose | Duration | Status |
 |---|------|---------|----------|--------|
 | 01 | **validate-configuration** | Load & test `.env` config, verify Graph connectivity | 10-15 min | Reference |
@@ -229,7 +218,7 @@ For detailed descriptions, code examples, and learning paths, see [docs/NOTEBOOK
 
 ---
 
-## � Learning Paths
+## 🎓 Learning Paths
 
 **📖 See [docs/NOTEBOOKS.md](docs/NOTEBOOKS.md) for complete learning paths including:**
 
@@ -242,7 +231,7 @@ Each path includes prerequisites, execution guide, expected outputs, and next st
 
 ---
 
-## � Troubleshooting
+## 🔧 Troubleshooting
 
 **📖 See [docs/SETUP.md](docs/SETUP.md) for comprehensive troubleshooting including:**
 
@@ -255,7 +244,7 @@ Each path includes prerequisites, execution guide, expected outputs, and next st
 
 ---
 
-## � Key Concepts
+## 🔑 Key Concepts
 
 **📖 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for deep dives on:**
 
