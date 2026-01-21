@@ -170,7 +170,6 @@ pip install -r requirements.txt
 uv run jupyter lab
 # OR
 jupyter lab
-```
 
 </details>
 
